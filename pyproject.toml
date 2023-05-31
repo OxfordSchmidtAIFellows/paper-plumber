@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "paper-plumber"
+authors = [
+    {name = "Shuxiang Cao", email = "shuxiang.cao@physics.ox.ac.uk"},
+    {name = "Carlos Outeiral", email = "carlos.outeiral@stats.ox.ac.uk"},
+]
+description = "Paper Plumber is a Python package that employs large language models to scan, understand, and extract key data points from scientific papers, streamlining research and data analysis."
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["LLM", "data extraction"]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "langchain",
+]
+dynamic = ["version"]

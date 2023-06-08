@@ -31,10 +31,16 @@ class OpenAIReader:
         self.model = OpenAI(model_name="text-davinci-003",
             openai_api_key=OPENAI_API_KEY)
         
+    def clean_response(self, response: str):
+        """Clean the response from the model."""
+        response = response.strip()
+        response = response.replace('\n', '')
+        return response
+        
     def read(self, text: str) -> Optional[str]:
         """Read text and return the value of the target variable."""
         prompt = self.prompt.format(target=self.target, text=text)
         response = self.model(prompt)
-        return response
+        return self.clean_response(response)
 
     

@@ -5,7 +5,7 @@ setup(
     version="0.0.1",
     author="Carlos Outeiral, Shuxiang Cao",
     author_email="carlos.outeiral@stats.ox.ac.uk, shuxiang.cao@physics.ox.ac.uk",
-    description="A package for LLM-powered paper data mining."
+    description="A package for LLM-powered paper data mining.",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     url="https://github.com/OxfordSchmidtAIFellows/paper-plumber",

@@ -9,7 +9,8 @@ from paperplumber.parsing import LLMReader
     [
         (
             "enthalpy of formation",
-            """The enthalpy of formation of water is 25.53 kcal/mol"""
+            """The enthalpy of formation of water is 25.53 kcal/mol""",
+            "25.53 kcal/mol"
         ),
         (
             "folding rate constant",

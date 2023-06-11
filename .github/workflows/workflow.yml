@@ -1,0 +1,35 @@
+name: pytest
+run-name: ${{ github.actor }} is testing
+on: [ push ]
+jobs:
+  Tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: List files in the repository
+        run: |
+          pip install -e .[dev]
+          pytest --cov paperplumber tests/
+  Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+      - name: Install packages and run lint
+        run: |
+          pip install flake8 pylint bandit
+          flake8 ./paperplumber --count --show-source --statistics
+          pylint --exit-zero paper_plumber
+          bandit -r paper_plumber

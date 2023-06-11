@@ -1,22 +1,35 @@
 [build-system]
-requires = ["setuptools", "setuptools-scm"]
-build-backend = "setuptools.build_meta"
+requires = ["flit"]
+build-backend = "flit_core.buildapi"
 
 [project]
-name = "paper-plumber"
-authors = [
-    {name = "Shuxiang Cao", email = "shuxiang.cao@physics.ox.ac.uk"},
-    {name = "Carlos Outeiral", email = "carlos.outeiral@stats.ox.ac.uk"},
-]
-description = "Paper Plumber is a Python package that employs large language models to scan, understand, and extract key data points from scientific papers, streamlining research and data analysis."
+name = "paperplumber"
+version = "0.0.1"
+description = "A package for LLM-powered paper data mining."
 readme = "README.md"
-requires-python = ">=3.10"
-keywords = ["LLM", "data extraction"]
-license = {text = "MIT"}
+authors = [
+    { name = "Carlos Outeiral", email = "carlos.outeiral@stats.ox.ac.uk" },
+    { name = "Shuxiang Cao", email = "shuxiang.cao@physics.ox.ac.uk" },
+]
+license = { file = "LICENSE" }
+homepage = "https://github.com/OxfordSchmidtAIFellows/paper-plumber"
+include = ["**/*"]
 classifiers = [
+    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
 ]
 dependencies = [
-    "langchain",
+    "langchain>=0.0.196",
+    'openai>=0.27.8'
 ]
-dynamic = ["version"]
+
+[project.urls]
+Source = "https://github.com/OxfordSchmidtAIFellows/paper-plumber"
+
+[project.optional-dependencies]
+dev = ["pytest>=6.2.4", "pytest-cov>=4.1.0"]

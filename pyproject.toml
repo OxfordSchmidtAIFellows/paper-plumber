@@ -27,6 +27,7 @@ dependencies = [
     'arxiv>=1.4.7',
     'pymed>=0.8.9',
     'biorxiv-retriever>=0.20.1',
+    'findpapers>=0.6.7'
 ]
 
 [project.scripts]

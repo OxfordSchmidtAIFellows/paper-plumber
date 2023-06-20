@@ -27,37 +27,41 @@ class FindPapersDatabase:
         @functools.wraps(findpapers.search)
         def search(**kwargs) -> List[Dict[str, Any]]:
             json_path = self._get_json_path()
-            if 'outputpath' in kwargs:
+            if "outputpath" in kwargs:
                 logger.warning(
                     f"Findpapers search wrapper:"
-                    f" The outputpath argument {kwargs['outputpath']} will be overwritten by {json_path}.")
-            kwargs['outputpath'] = json_path
+                    f" The outputpath argument {kwargs['outputpath']} will be overwritten by {json_path}."
+                )
+            kwargs["outputpath"] = json_path
             return findpapers.search(**kwargs)
 
         @functools.wraps(findpapers.refine)
         def refine(**kwargs) -> List[Dict[str, Any]]:
             json_path = self._get_json_path()
-            if 'search_path' in kwargs:
+            if "search_path" in kwargs:
                 logger.warning(
                     f"Findpapers refine wrapper:"
-                    f" The search_path argument {kwargs['search_path']} will be overwritten by {json_path}.")
-            kwargs['search_path'] = json_path
+                    f" The search_path argument {kwargs['search_path']} will be overwritten by {json_path}."
+                )
+            kwargs["search_path"] = json_path
             return findpapers.refine(**kwargs)
 
         @functools.wraps(findpapers.download)
         def download(**kwargs) -> List[Dict[str, Any]]:
             json_path = self._get_json_path()
-            output_directory = os.path.join(self.path, 'pdfs')
-            if 'search_path' in kwargs:
+            output_directory = os.path.join(self.path, "pdfs")
+            if "search_path" in kwargs:
                 logger.warning(
                     f"Findpapers download wrapper:"
-                    f" The search_path argument {kwargs['search_path']} will be overwritten by {json_path}.")
-            if 'output_directory' in kwargs:
+                    f" The search_path argument {kwargs['search_path']} will be overwritten by {json_path}."
+                )
+            if "output_directory" in kwargs:
                 logger.warning(
                     f"Findpapers download wrapper:"
-                    f" The search_path argument {kwargs['output_directory']} will be overwritten by {output_directory}.")
-            kwargs['search_path'] = json_path
-            kwargs['output_directory'] = output_directory
+                    f" The search_path argument {kwargs['output_directory']} will be overwritten by {output_directory}."
+                )
+            kwargs["search_path"] = json_path
+            kwargs["output_directory"] = output_directory
             return findpapers.download(**kwargs)
 
         self.search = search
@@ -79,7 +83,7 @@ class FindPapersDatabase:
         Returns:
             str: The path to the JSON file.
         """
-        return os.path.join(self.path, 'papers.json')
+        return os.path.join(self.path, "papers.json")
 
     def _create_directory(self) -> None:
         """
@@ -94,7 +98,7 @@ class FindPapersDatabase:
         if self._loaded_info is not None:
             return
 
-        with open(os.path.join(self.path, 'papers.json'), 'r') as file:
+        with open(os.path.join(self.path, "papers.json"), "r") as file:
             self._loaded_info = json.load(file)
 
     def list_available_papers(self) -> List[Dict[str, Any]]:
@@ -106,5 +110,5 @@ class FindPapersDatabase:
         """
         self._load_json()
 
-        papers = self._loaded_info['papers']
+        papers = self._loaded_info["papers"]
         return papers

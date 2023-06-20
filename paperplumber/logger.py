@@ -1,4 +1,4 @@
-# Utils for logging
+""" Utils for logging """
 
 import logging
 

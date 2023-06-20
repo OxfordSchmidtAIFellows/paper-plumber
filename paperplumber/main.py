@@ -1,11 +1,10 @@
-# The entrance file of the CLI application is paperplumber/main.py. It wrapps the findpapers package and adds some
-# additional functionality.
+""" The entrance file of the CLI application is paperplumber/main.py.
+It wrapps the findpapers package and adds some # additional functionality.
+"""
 
-import typer
-import re
-import random
+from typing import List
 from datetime import datetime
-from typing import Tuple, List
+import typer
 from rich.console import Console
 from rich.table import Table
 
@@ -77,14 +76,18 @@ def search(
         "-p",
         "--publication-types",
         show_default=True,
-        help="A comma-separated list of publication types to filter when searching, if not specified all the publication types will be collected (this parameter is case insensitive). The available publication types are: journal, conference proceedings, book, other",
+        help="A comma-separated list of publication types to filter when searching, if not specified all the"
+        " publication types will be collected (this parameter is case insensitive). The available publication"
+        " types are: journal, conference proceedings, book, other",
     ),
     scopus_api_token: str = typer.Option(
         None,
         "-ts",
         "--token-scopus",
         show_default=True,
-        help="A API token used to fetch data from Scopus database. If you don't have one go to https://dev.elsevier.com and get it. (If not provided it will be loaded from the environment variable FINDPAPERS_SCOPUS_API_TOKEN)",
+        help="A API token used to fetch data from Scopus database. If you don't have one go to"
+        " https://dev.elsevier.com and get it. (If not provided it will be loaded from the environment"
+        " variable FINDPAPERS_SCOPUS_API_TOKEN)",
     ),
     ieee_api_token: str = typer.Option(
         None,
@@ -108,6 +111,7 @@ def search(
         help="If you wanna a verbose mode logging",
     ),
 ):
+    # pylint disable=line-too-long
     """
     Search for papers metadata using a query.
 
@@ -171,11 +175,11 @@ def search(
         )
 
         if query is None and query_filepath is not None:
-            with open(query_filepath, "r") as f:
-                query = f.read().strip()
+            with open(query_filepath, "r", encoding="utf-8") as file:
+                query = file.read().strip()
 
-        db = paperplumber.FindPapersDatabase(path=path)
-        db.search(
+        database = paperplumber.FindPapersDatabase(path=path)
+        database.search(
             query=query,
             since=since,
             until=until,
@@ -188,11 +192,11 @@ def search(
             proxy=proxy,
             verbose=verbose,
         )
-    except Exception as e:
+    except Exception as error:
         if verbose:
-            logger.debug(e, exc_info=True)
+            logger.debug(error, exc_info=True)
         else:
-            typer.echo(e)
+            typer.echo(error)
         raise typer.Exit(code=1)
 
 
@@ -258,6 +262,7 @@ def refine(
         help="If you wanna a verbose mode logging",
     ),
 ):
+    # pylint disable=line-too-long
     """
     Refine the search results by selecting/classifying the papers.
 
@@ -297,8 +302,8 @@ def refine(
             facet = string_split[0].strip()
             categories_by_facet[facet] = [x.strip() for x in string_split[1].split(",")]
 
-        db = paperplumber.FindPapersDatabase(path=path)
-        db.refine(
+        database = paperplumber.FindPapersDatabase(path=path)
+        database.refine(
             categories=categories_by_facet,
             highlights=highlights,
             show_abstract=show_abstract,
@@ -309,11 +314,11 @@ def refine(
             verbose=verbose,
         )
 
-    except Exception as e:
+    except Exception as error:
         if verbose:
-            logger.debug(e, exc_info=True)
+            logger.debug(error, exc_info=True)
         else:
-            typer.echo(e)
+            typer.echo(error)
         raise typer.Exit(code=1)
 
 
@@ -351,6 +356,7 @@ def download(
         help="If you wanna a verbose mode logging",
     ),
 ):
+    # pylint disable=line-too-long
     """
     Download full-text papers using the search results.
 
@@ -391,19 +397,19 @@ def download(
             string_split = categories_string.split(":")
             facet = string_split[0].strip()
             categories_by_facet[facet] = [x.strip() for x in string_split[1].split(",")]
-        db = paperplumber.FindPapersDatabase(path=path)
-        db.download(
+        database = paperplumber.FindPapersDatabase(path=path)
+        database.download(
             only_selected_papers=only_selected_papers,
             categories_filter=categories_by_facet,
             proxy=proxy,
             verbose=verbose,
         )
 
-    except Exception as e:
+    except Exception as error:
         if verbose:
-            logger.debug(e, exc_info=True)
+            logger.debug(error, exc_info=True)
         else:
-            typer.echo(e)
+            typer.echo(error)
         raise typer.Exit(code=1)
 
 
@@ -420,14 +426,15 @@ def list_available(
         help="If you wanna a verbose mode logging",
     ),
 ):
+    # pylint disable=line-too-long
     """
     List the available papers in the local directory, after searching.
     You can control the command logging verbosity by the -v (or --verbose) argument.
     """
 
     try:
-        db = paperplumber.FindPapersDatabase(path=path)
-        papers = db.list_available_papers()
+        database = paperplumber.FindPapersDatabase(path=path)
+        papers = database.list_available_papers()
         table = Table(show_header=True, header_style="bold magenta")
         table.add_column("Publication date", style="dim", width=10)
         table.add_column("Title", style="dim", width=50)
@@ -440,11 +447,11 @@ def list_available(
         console = Console()
         console.print(table)
 
-    except Exception as e:
+    except Exception as error:
         if verbose:
-            logger.debug(e, exc_info=True)
+            logger.debug(error, exc_info=True)
         else:
-            typer.echo(e)
+            typer.echo(error)
         raise typer.Exit(code=1)
 
 
@@ -458,4 +465,5 @@ def version():
 
 
 def main():
+    """Main function to be called by the command line interface"""
     app()

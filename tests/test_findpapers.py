@@ -27,11 +27,11 @@ class TestFindPapersDatabase:
             os.rmdir(self.path)
 
     def test_create_directory(self):
-        findpapers_db = FindPapersDatabase(self.path, self.query)
+        findpapers_db = FindPapersDatabase(self.path)
         assert os.path.exists(self.path)
 
     def test_get_json_path(self):
-        findpapers_db = FindPapersDatabase(self.path, self.query)
+        findpapers_db = FindPapersDatabase(self.path)
         assert findpapers_db._get_json_path() == self.json_file
 
     def test_load_json(self):
@@ -39,7 +39,7 @@ class TestFindPapersDatabase:
         with open(self.json_file, "w") as f:
             json.dump(data, f)
 
-        findpapers_db = FindPapersDatabase(self.path, self.query)
+        findpapers_db = FindPapersDatabase(self.path)
         findpapers_db._load_json()
 
         assert findpapers_db._loaded_info == data
@@ -49,7 +49,7 @@ class TestFindPapersDatabase:
         with open(self.json_file, "w") as f:
             json.dump(data, f)
 
-        findpapers_db = FindPapersDatabase(self.path, self.query)
+        findpapers_db = FindPapersDatabase(self.path)
         papers = findpapers_db.list_available_papers()
 
         assert papers == data["papers"]

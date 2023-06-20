@@ -4,7 +4,6 @@ import pytest
 from paperplumber.parsing import OpenAIReader
 
 
-@pytest.mark.skip("Ignore for offline testing")
 @pytest.mark.parametrize(
     "target, text, expected",
     [

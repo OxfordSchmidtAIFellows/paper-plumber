@@ -2,7 +2,6 @@ import os
 import pytest
 
 
-@pytest.mark.skip(reason="Test takes too long.")
 def test_findpapers_integration(tmp_path):
     # Test 1: search for papers
     os.system(

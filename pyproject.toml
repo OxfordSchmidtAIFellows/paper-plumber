@@ -23,8 +23,14 @@ classifiers = [
 ]
 dependencies = [
     "langchain>=0.0.196",
-    'openai>=0.27.8'
+    'openai>=0.27.8',
+    'arxiv>=1.4.7',
+    'pymed>=0.8.9',
+    'biorxiv-retriever>=0.20.1',
 ]
+
+[project.scripts]
+paperplumber = "paperplumber.main:main"
 
 [project.urls]
 Source = "https://github.com/OxfordSchmidtAIFellows/paper-plumber"

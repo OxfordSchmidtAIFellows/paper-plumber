@@ -33,5 +33,6 @@ jobs:
       - name: Install packages and run lint
         run: |
           pip install pylint bandit
+          pip install -e .[dev]
           pylint paperplumber
           bandit -r paperplumber

@@ -29,6 +29,7 @@ dependencies = [
     'biorxiv-retriever>=0.20.1',
     'findpapers>=0.6.7',
     'typer>=0.3.2',
+    'rich>=13.4.2'
 ]
 
 [project.scripts]

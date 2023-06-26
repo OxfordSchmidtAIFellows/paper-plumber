@@ -9,7 +9,6 @@ from paperplumber.parsing.pdf_parser import PDFParser
 
 
 logger = get_logger(__name__)
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 
 class EmbeddingSearcher(PDFParser):
@@ -39,10 +38,7 @@ class EmbeddingSearcher(PDFParser):
         super().__init__(pdf_path)
 
         # Set up an embedding model
-        self._embedder = OpenAIEmbeddings(
-            openai_api_key=OPENAI_API_KEY,
-            model_name="text-embedding-ada-002",
-        )
+        self._embedder = OpenAIEmbeddings()
 
         # Build a FAISS index from the document pages
         self._faiss_index = FAISS.from_documents(

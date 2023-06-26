@@ -9,6 +9,7 @@ from paperplumber.parsing.pdf_parser import PDFParser
 
 
 logger = get_logger(__name__)
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 
 class EmbeddingSearcher(PDFParser):
@@ -37,8 +38,15 @@ class EmbeddingSearcher(PDFParser):
     def __init__(self, pdf_path: str):
         super().__init__(pdf_path)
 
+        # Set up an embedding model
+        self._embedder = OpenAIEmbeddings(
+            openai_api_key=OPENAI_API_KEY,
+            model_name="text-embedding-ada-002",
+        )
+
         # Build a FAISS index from the document pages
-        self._faiss_index = FAISS.from_documents(self._pages, OpenAIEmbeddings())
+        self._faiss_index = FAISS.from_documents(
+            self._pages, self._embedder)
 
     def similarity_search(self, question: str, k: int = 2) -> List[str]:
         """

@@ -459,14 +459,13 @@ def list_available(
             typer.echo(error)
         raise typer.Exit(code=1)
 
+
 @app.command("parse")
 def parse(
     path: str = typer.Argument(
         ..., help="A valid path for the search result and full-text papers files"
     ),
-    target: str = typer.Argument(
-        ..., help="The value to extract from the papers"
-    ),
+    target: str = typer.Argument(..., help="The value to extract from the papers"),
     verbose: bool = typer.Option(
         False,
         "-v",
@@ -510,9 +509,8 @@ def parse(
                 values = scanner.scan(target)
                 values_dict[paper_path] = values
 
-        with open('output.json', 'w') as f:
-            json.dump(values_dict, f)
-
+        with open("output.json", "w", encoding="utf-8") as output_file:
+            json.dump(values_dict, output_file)
 
     except Exception as error:
         if verbose:
@@ -529,6 +527,7 @@ def version():
     """
 
     typer.echo(f"paperplumber {paperplumber.__version__}")
+
 
 def main():
     """Main function to be called by the command line interface"""

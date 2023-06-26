@@ -1,5 +1,4 @@
 """This module implements the embedding search of a pdf file"""
-import os
 from typing import List
 from langchain.vectorstores import FAISS
 from langchain.embeddings.openai import OpenAIEmbeddings
@@ -44,8 +43,7 @@ class EmbeddingSearcher(PDFParser):
         )
 
         # Build a FAISS index from the document pages
-        self._faiss_index = FAISS.from_documents(
-            self._pages, self._embedder)
+        self._faiss_index = FAISS.from_documents(self._pages, self._embedder)
 
     def similarity_search(self, question: str, k: int = 2) -> List[str]:
         """

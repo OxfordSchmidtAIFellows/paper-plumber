@@ -511,7 +511,7 @@ def parse(
                 values_dict[paper_path] = values
 
         with open('output.json', 'w') as f:
-            json.dump(values_dict)
+            json.dump(values_dict, f)
 
 
     except Exception as error:

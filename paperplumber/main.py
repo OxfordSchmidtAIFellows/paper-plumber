@@ -2,6 +2,7 @@
 It wrapps the findpapers package and adds some # additional functionality.
 """
 
+import os
 from typing import List
 from datetime import datetime
 import typer
@@ -9,6 +10,9 @@ from rich.console import Console
 from rich.table import Table
 
 import paperplumber
+from paperplumber.database.findpapers_integration import FindPapersDatabase
+from paperplumber.parsing.embedding_search import EmbeddingSearcher
+from paperplumber.parsing.file_scan import FileScanner
 
 app = typer.Typer()
 
@@ -454,6 +458,71 @@ def list_available(
             typer.echo(error)
         raise typer.Exit(code=1)
 
+@app.command("parse")
+def parse(
+    path: str = typer.Argument(
+        ..., help="A valid path for the search result and full-text papers files"
+    ),
+    target: str = typer.Argument(
+        ..., help="The value to extract from the papers"
+    ),
+    verbose: bool = typer.Option(
+        False,
+        "-v",
+        "--verbose",
+        show_default=True,
+        help="If you wanna a verbose mode logging",
+    ),
+    filter_with_embedding_search: bool = typer.Option(
+        False,
+        "-f",
+        "--filter-with-embedding-search",
+        show_default=True,
+        help="If you wanna filter pages based on similarity to target",
+    ),
+):
+    # pylint disable=line-too-long
+    """
+    Parse the available papers in the local directory, after searching.
+    You can control the command logging verbosity by the -v (or --verbose) argument.
+    """
+    try:
+        # Instantiate a database to list all available pdfs in the specified path
+        database = FindPapersDatabase(path=path)
+        downloaded_papers = database.list_downloaded_papers()
+
+        values_dict = {}
+
+        # Iterate over all papers
+        for paper_path in downloaded_papers:
+            pdf_path = os.path.join(path, "pdfs", paper_path)
+
+            # Create document embeddings for the current paper
+            doc = EmbeddingSearcher(pdf_path)
+
+            # If filter_with_embedding_search is True, filter pages based on similarity to target
+            if filter_with_embedding_search:
+                pages = doc.similarity_search(target)
+            else:
+                # If filter_with_embedding_search is False, consider all pages
+                pages = doc.pages
+
+            scanner = FileScanner.from_pages(pages)
+            values = scanner.scan(target)
+
+            # Map the paper path to the list of found values
+            values_dict[paper_path] = values
+
+        return values_dict
+
+
+    except Exception as error:
+        if verbose:
+            logger.debug(error, exc_info=True)
+        else:
+            typer.echo(error)
+        raise typer.Exit(code=1)
+
 
 @app.command("version")
 def version():
@@ -462,7 +531,6 @@ def version():
     """
 
     typer.echo(f"paperplumber {paperplumber.__version__}")
-
 
 def main():
     """Main function to be called by the command line interface"""

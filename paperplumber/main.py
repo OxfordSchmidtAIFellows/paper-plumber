@@ -525,7 +525,7 @@ def parse(
 @app.command("version")
 def version():
     """
-    Show current findpapers version
+    Show current paperplumber version
     """
 
     typer.echo(f"paperplumber {paperplumber.__version__}")

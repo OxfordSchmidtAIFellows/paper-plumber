@@ -123,3 +123,23 @@ class FindPapersDatabase:
 
         papers = self._loaded_info["papers"]
         return papers
+
+    def list_downloaded_papers(self) -> List[Dict[str, Any]]:
+        """
+        Returns a list of downloaded papers in the database.
+
+        Returns:
+            List[Dict[str, Any]]: The list of papers.
+        """
+        self._load_json()
+
+        pdf_path = os.path.join(self.path, "pdfs")
+
+        if not os.path.exists(pdf_path):
+            logger.error(
+                "No downloaded papers find. Please run `paperplumber download [path]` to download them first."
+            )
+
+        pdfs = [x for x in os.listdir(pdf_path) if x.endswith(".pdf")]
+
+        return pdfs

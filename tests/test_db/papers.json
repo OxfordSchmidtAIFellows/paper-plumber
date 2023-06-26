@@ -1,0 +1,45 @@
+{
+  "databases": null,
+  "limit": null,
+  "limit_per_database": null,
+  "number_of_papers": 1,
+  "number_of_papers_by_database": {
+    "arXiv": 1
+  },
+  "papers": [
+    {
+      "abstract": " Fast magnetic flux control is a crucial ingredient for circuit quantum\nelectrodynamics (cQED) systems. So far it has been a challenge to implement\nthis technology with the high coherence 3D cQED architecture. In this paper we\ncontrol the magnetic field inside a superconducting waveguide cavity using a\nmagnetic hose, which allows fast flux control of 3D transmon qubits on time\nscales < 100 ns. The hose is designed as an effective microwave filter to not\ncompromise the energy relaxation time of the qubit. The magnetic hose is a\npromising tool for fast magnetic flux control in various platforms intended for\nquantum information processing and quantum optics.\n",
+      "authors": [
+        "Gargiulo, O.",
+        "Oleschko, S.",
+        "Prat-Camps, J.",
+        "Zanner, M.",
+        "Kirchmair, G."
+      ],
+      "categories": null,
+      "citations": null,
+      "comments": "9 pages, 7 figures, including supplementary material",
+      "databases": [
+        "arXiv"
+      ],
+      "doi": null,
+      "keywords": [],
+      "number_of_pages": null,
+      "pages": null,
+      "publication": null,
+      "publication_date": "2018-11-27",
+      "selected": null,
+      "title": "Fast flux control of 3D transmon qubits using a magnetic hose",
+      "urls": [
+        "http://arxiv.org/pdf/1811.10875v2",
+        "https://arxiv.org/pdf/1811.10875",
+        "http://arxiv.org/abs/1811.10875v2"
+      ]
+    }
+  ],
+  "processed_at": "2023-06-20 17:53:57",
+  "publication_types": null,
+  "query": "[quantum] AND [transmon] AND [high-coherence] AND [3D]",
+  "since": null,
+  "until": null
+}

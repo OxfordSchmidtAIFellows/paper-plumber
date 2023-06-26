@@ -42,5 +42,3 @@ class OpenAIReader:
         prompt = self.prompt.format(target=self.target, text=text)
         response = self.model(prompt)
         return self.clean_response(response)
-
-    

@@ -7,8 +7,13 @@ at https://github.com/meta-tabchen/paper-finder.
 
 ## Installation
 
-To use this package, you need to install it first. You can do this by cloning the repository and installing the
-dependencies. More detailed instructions will be provided soon.
+You install the package by cloning the repository and installing the dependencies.
+
+```
+git clone https://github.com/OxfordSchmidtAIFellows/paper-plumber.git
+cd paper-plumber
+pip install .
+```
 
 ## Usage
 
@@ -17,14 +22,14 @@ of the commands available.
 
 ### Commands
 
-+ download - Download full-text papers using the search results.
-+ list - List the available papers in the local directory, after searching. You can control the command logging
++ `download` - Download full-text papers using the search results.
++ `list` - List the available papers in the local directory, after searching. You can control the command logging
   verbosity by the `-v` (or `--verbose`) argument.
-+ parse - Parse the available papers in the local directory, after searching. You can control the command logging
++ `parse` - Parse the available papers in the local directory, after searching. You can control the command logging
   verbosity by the `-v` (or `--verbose`) argument.
-+ refine - Refine the search results by selecting/classifying the papers.
-+ search - Search for papers metadata using a query.
-+ version - Show the current version.
++ `refine` - Refine the search results by selecting/classifying the papers.
++ `search` - Search for papers metadata using a query.
++ `version` - Show the current version.
 
 Each command has its own set of options which can be found in the `--help` information for each command.
 
@@ -36,15 +41,18 @@ paperplumber parse [OPTIONS] PATH TARGET
 
 This command is used to parse the available papers in the local directory, after searching.
 
-Arguments for parse
+*Arguments*
 
 + `path` - A valid path for the search result and full-text papers files. This argument is required.
 + `target` - The value to extract from the papers. This argument is also required.
-  Options for parse
+
+*Options*
+
 + `--verbose`, `-v` - Use this option if you want verbose mode logging.
 + `--filter-with-embedding-search`, `-f` - Use this option if you want to filter pages based on similarity to target. By
   default, it is set to True.
-  If you need help, you can use the --help option after any command to get more information about that command.
+
+If you need help, you can use the `--help` option after any command to get more information about that command.
 
 ### Full example
 

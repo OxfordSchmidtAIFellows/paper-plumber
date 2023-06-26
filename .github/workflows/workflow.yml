@@ -32,7 +32,7 @@ jobs:
           python-version: 3.11
       - name: Install packages and run lint
         run: |
-          pip install flake8 pylint bandit
-          flake8 ./paperplumber --count --show-source --statistics
-          pylint --exit-zero paper_plumber
-          bandit -r paper_plumber
+          pip install pylint bandit
+          pip install -e .[dev]
+          pylint paperplumber
+          bandit -r paperplumber

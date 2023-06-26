@@ -21,7 +21,7 @@ from paperplumber.parsing import OpenAIReader
                         change occurs in the dead time). In experiments performed at final urea concentrations of 2.0 and
                          2.8 M, k f was found to be independent of Arc-L1-Arc protein concentration from 1 to 10 µM (data
                           not shown).""",
-            "240 s^-1",
+            "240 s^{-1}",
         ),
     ],
 )

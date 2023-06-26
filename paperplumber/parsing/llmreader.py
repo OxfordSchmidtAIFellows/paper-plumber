@@ -17,7 +17,8 @@ class OpenAIReader:
     Can you read the following text from a scientific article, and
     tell me if it contains information about the value of {target}?
     If the value is not quoted in the text, return just 'NA'. If the value
-    is quoted in the text, please return the value.
+    is quoted in the text, please return the value. If units are reported,
+    please make sure that they are written in LaTeX format (e.g. s^{-1}).
 
     Target: coherence time
     Text: We measured a single-qubit coherence time of 10 +/- .5 milliseconds

@@ -509,7 +509,9 @@ def parse(
                 values = scanner.scan(target)
                 values_dict[paper_path] = values
 
-        with open("output.json", "w", encoding="utf-8") as output_file:
+        # Save on the database path as output.json
+        base_path = os.path.abspath(path)
+        with open(f"{base_path}/output.json", "w", encoding="utf-8") as output_file:
             json.dump(values_dict, output_file)
 
     except Exception as error:

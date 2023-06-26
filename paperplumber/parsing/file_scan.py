@@ -19,8 +19,19 @@ class FileScanner(PDFParser):
     def __init__(self, pdf_path: str):
         super().__init__(pdf_path)
 
-        # Build a FAISS index from the document pages
-        self._faiss_index = FAISS.from_documents(self._pages, OpenAIEmbeddings())
+    @classmethod
+    def from_pages(cls, pages: List):
+        """Creates a FileScanner object from a list of pages.
+
+        Args:
+            pages (List): A list of pages to be scanned.
+
+        Returns:
+            FileScanner: A FileScanner object with the specified pages."""
+
+        scanner = cls.__new__(cls)
+        scanner._pages = pages
+        return scanner
 
     def scan(self, target: str) -> List[str]:
         """Scans the pages of a document for a specified target using the LLMReader.

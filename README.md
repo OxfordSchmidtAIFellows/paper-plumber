@@ -3,7 +3,7 @@
 Paper Plumber is a Python package that employs large language models to scan, understand, and extract key data points
 from scientific papers, streamlining research and data analysis. Currently the project is a CLI application. It's built
 on top of the findpapers package. You can find more information about findpapers
-at https://github.com/meta-tabchen/paper-finder.
+at https://github.com/jonatasgrosman/findpapers.
 
 ## Installation
 

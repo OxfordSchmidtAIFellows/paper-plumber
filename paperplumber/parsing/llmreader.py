@@ -19,28 +19,25 @@ class OpenAIReader:
     If the value is not quoted in the text, return just 'NA'. If the value
     is quoted in the text, please return the value.
 
-    Text: 'The value of {target} is 10 +/- .5'
-    Answer: 10
+    Target: coherence time
+    Text: We measured a single-qubit coherence time of 10 +/- .5 milliseconds
+    Answer: 10 ms
 
-    Text: 'Chocolate is delicious'
+    Target: speed of light
+    Text: Chocolate is delicious
     Answer: NA
 
+    Target: {target}
     Text: {text}
     Answer:
     """
 
     def __init__(self, target: str):
-        if not OPENAI_API_KEY:
-            raise ValueError("OpenAI API key not found. "
-                "Please set OPENAI_API_KEY in your local environment.")
-
         self.target = target
         self.prompt = PromptTemplate(
             input_variables=["target", "text"], template=self.PROMPT_TEMPLATE
         )
-        self.model = OpenAI(
-            model_name="gpt-3.5-turbo", openai_api_key=OPENAI_API_KEY
-        )
+        self.model = OpenAI(model_name="gpt-3.5-turbo")
 
     def clean_response(self, response: str):
         """Clean the response from the model."""

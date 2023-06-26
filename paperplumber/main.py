@@ -3,6 +3,7 @@ It wrapps the findpapers package and adds some # additional functionality.
 """
 
 import os
+import json
 from typing import List
 from datetime import datetime
 import typer
@@ -474,7 +475,7 @@ def parse(
         help="If you wanna a verbose mode logging",
     ),
     filter_with_embedding_search: bool = typer.Option(
-        False,
+        True,
         "-f",
         "--filter-with-embedding-search",
         show_default=True,
@@ -497,23 +498,20 @@ def parse(
         for paper_path in downloaded_papers:
             pdf_path = os.path.join(path, "pdfs", paper_path)
 
-            # Create document embeddings for the current paper
-            doc = EmbeddingSearcher(pdf_path)
-
             # If filter_with_embedding_search is True, filter pages based on similarity to target
             if filter_with_embedding_search:
+                doc = EmbeddingSearcher(pdf_path)
                 pages = doc.similarity_search(target)
+                scanner = FileScanner.from_pages(pages)
+                values = scanner.scan(target)
+                values_dict[paper_path] = values
             else:
-                # If filter_with_embedding_search is False, consider all pages
-                pages = doc.pages
+                scanner = FileScanner(pdf_path)
+                values = scanner.scan(target)
+                values_dict[paper_path] = values
 
-            scanner = FileScanner.from_pages(pages)
-            values = scanner.scan(target)
-
-            # Map the paper path to the list of found values
-            values_dict[paper_path] = values
-
-        return values_dict
+        with open('output.json', 'w') as f:
+            json.dump(values_dict)
 
 
     except Exception as error:

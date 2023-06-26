@@ -4,7 +4,8 @@ This module scans the existing downloaded papers and ask question for each of th
 import os
 from typing import Dict, List, Optional
 from paperplumber.database.findpapers_integration import FindPapersDatabase
-from paperplumber.parsing.embedding_search import DocEmbeddings
+from paperplumber.parsing.embedding_search import EmbeddingSearcher
+from paperplumber.parsing.file_scan import FileScanner
 from paperplumber.parsing.llmreader import OpenAIReader
 
 
@@ -37,17 +38,14 @@ def scan_the_target(
     database = FindPapersDatabase(path=path)
     downloaded_papers = database.list_downloaded_papers()
 
-    # Instantiate a reader to read the target quantity from the papers
-    reader = OpenAIReader(target=target)
-
     values_dict = {}
 
     # Iterate over all papers
     for paper_path in downloaded_papers:
-        values = []
+        pdf_path = os.path.join(path, "pdfs", paper_path)
 
         # Create document embeddings for the current paper
-        doc = DocEmbeddings(os.path.join(path, "pdfs", paper_path))
+        doc = EmbeddingSearcher(pdf_path)
 
         # If filter_with_embedding_search is True, filter pages based on similarity to target
         if filter_with_embedding_search:
@@ -56,13 +54,8 @@ def scan_the_target(
             # If filter_with_embedding_search is False, consider all pages
             pages = doc.pages
 
-        # Extract target quantity from each page
-        for page in pages:
-            value = reader.read(page)
-
-            # If the reader found a value, append it to the values list
-            if value is not None:
-                values.append(value)
+        scanner = FileScanner.from_pages(pages)
+        values = scanner.scan(target)
 
         # Map the paper path to the list of found values
         values_dict[paper_path] = values

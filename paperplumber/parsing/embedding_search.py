@@ -38,7 +38,10 @@ class EmbeddingSearcher(PDFParser):
         super().__init__(pdf_path)
 
         # Set up an embedding model
-        self._embedder = OpenAIEmbeddings()
+        self._embedder = OpenAIEmbeddings(
+            request_timeout=10,
+            max_retries=10,
+        )
 
         # Build a FAISS index from the document pages
         self._faiss_index = FAISS.from_documents(

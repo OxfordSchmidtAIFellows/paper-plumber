@@ -51,7 +51,7 @@ class FileScanner(PDFParser):
             Warning: If more than one unique value is found for the target."""
 
         reader = OpenAIReader(target)
-        values = [reader.read(page.page_content) for page in self._pages
+        values = [reader.read(page.page_content) for page in self._pages]
 
         # Remove NAs
         clean_values = set([value for value in values if value is not 'NA'])

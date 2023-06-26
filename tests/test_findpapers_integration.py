@@ -17,4 +17,3 @@ def test_findpapers_integration(tmp_path):
     # Test 3: scan the papers
     os.system(f"paperplumber parse {tmp_path} 'coherence time'")
     assert os.path.exists(os.path.join(tmp_path, "output.json"))
-

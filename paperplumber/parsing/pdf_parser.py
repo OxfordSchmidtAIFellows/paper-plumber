@@ -26,7 +26,7 @@ class PDFParser:
         self._loader = self._get_loader(self._backend)(pdf_path)
         self._pages = self._loader.load_and_split()
 
-    def _get_loader(backend: str):
+    def _get_loader(self, backend: str):
         if backend == "pdfium2":
             return PyPDFium2Loader
         else:

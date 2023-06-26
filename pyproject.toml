@@ -1,0 +1,48 @@
+[build-system]
+requires = ["flit"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "paperplumber"
+version = "0.0.1"
+description = "A package for LLM-powered paper data mining."
+readme = "README.md"
+authors = [
+    { name = "Carlos Outeiral", email = "carlos.outeiral@stats.ox.ac.uk" },
+    { name = "Shuxiang Cao", email = "shuxiang.cao@physics.ox.ac.uk" },
+]
+license = { file = "LICENSE" }
+homepage = "https://github.com/OxfordSchmidtAIFellows/paper-plumber"
+include = ["**/*"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "langchain>=0.0.196",
+    'openai>=0.27.8',
+    'arxiv>=1.4.7',
+    'pymed>=0.8.9',
+    'biorxiv-retriever>=0.20.1',
+    'findpapers>=0.6.7',
+    'typer>=0.3.2',
+    'rich>=13.4.2'
+]
+
+[project.scripts]
+paperplumber = "paperplumber.main:main"
+
+[project.urls]
+Source = "https://github.com/OxfordSchmidtAIFellows/paper-plumber"
+
+[project.optional-dependencies]
+dev = ["pytest>=6.2.4", "pytest-cov>=4.1.0"]
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"

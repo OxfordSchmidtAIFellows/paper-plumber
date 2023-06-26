@@ -16,12 +16,22 @@ class OpenAIReader:
     PROMPT_TEMPLATE = """
     Can you read the following text from a scientific article, and
     tell me if it contains information about the value of {target}?
-    If the value is not quoted in the text, return 'NA'. If the value
-    is quoted in the text, please return the value.
+    If the value is not quoted in the text, return just 'NA'. If the value
+    is quoted in the text, please return the value. If units are reported,
+    please make sure that they are written using ^ to specify superindices
+    (e.g. s^-1).
 
+    Target: coherence time
+    Text: We measured a single-qubit coherence time of 10 +/- .5 milliseconds
+    Answer: 10 ms
+
+    Target: speed of light
+    Text: Chocolate is delicious
+    Answer: NA
+
+    Target: {target}
     Text: {text}
-
-    Return your answer below:
+    Answer:
     """
 
     def __init__(self, target: str):
@@ -29,9 +39,7 @@ class OpenAIReader:
         self.prompt = PromptTemplate(
             input_variables=["target", "text"], template=self.PROMPT_TEMPLATE
         )
-        self.model = OpenAI(
-            model_name="text-davinci-003", openai_api_key=OPENAI_API_KEY
-        )
+        self.model = OpenAI(model_name="gpt-3.5-turbo")
 
     def clean_response(self, response: str):
         """Clean the response from the model."""

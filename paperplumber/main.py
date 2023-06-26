@@ -2,6 +2,8 @@
 It wrapps the findpapers package and adds some # additional functionality.
 """
 
+import os
+import json
 from typing import List
 from datetime import datetime
 import typer
@@ -9,6 +11,9 @@ from rich.console import Console
 from rich.table import Table
 
 import paperplumber
+from paperplumber.database.findpapers_integration import FindPapersDatabase
+from paperplumber.parsing.embedding_search import EmbeddingSearcher
+from paperplumber.parsing.file_scan import FileScanner
 
 app = typer.Typer()
 
@@ -446,6 +451,68 @@ def list_available(
             )
         console = Console()
         console.print(table)
+
+    except Exception as error:
+        if verbose:
+            logger.debug(error, exc_info=True)
+        else:
+            typer.echo(error)
+        raise typer.Exit(code=1)
+
+
+@app.command("parse")
+def parse(
+    path: str = typer.Argument(
+        ..., help="A valid path for the search result and full-text papers files"
+    ),
+    target: str = typer.Argument(..., help="The value to extract from the papers"),
+    verbose: bool = typer.Option(
+        False,
+        "-v",
+        "--verbose",
+        show_default=True,
+        help="If you wanna a verbose mode logging",
+    ),
+    filter_with_embedding_search: bool = typer.Option(
+        True,
+        "-f",
+        "--filter-with-embedding-search",
+        show_default=True,
+        help="If you wanna filter pages based on similarity to target",
+    ),
+):
+    # pylint disable=line-too-long
+    """
+    Parse the available papers in the local directory, after searching.
+    You can control the command logging verbosity by the -v (or --verbose) argument.
+    """
+    try:
+        # Instantiate a database to list all available pdfs in the specified path
+        database = FindPapersDatabase(path=path)
+        downloaded_papers = database.list_downloaded_papers()
+
+        values_dict = {}
+
+        # Iterate over all papers
+        for paper_path in downloaded_papers:
+            pdf_path = os.path.join(path, "pdfs", paper_path)
+
+            # If filter_with_embedding_search is True, filter pages based on similarity to target
+            if filter_with_embedding_search:
+                doc = EmbeddingSearcher(pdf_path)
+                pages = doc.similarity_search(target)
+                scanner = FileScanner.from_pages(pages)
+                values = scanner.scan(target)
+                values_dict[paper_path] = values
+            else:
+                scanner = FileScanner(pdf_path)
+                values = scanner.scan(target)
+                values_dict[paper_path] = values
+
+        # Save on the database path as output.json
+        base_path = os.path.abspath(path)
+        with open(f"{base_path}/output.json", "w", encoding="utf-8") as output_file:
+            json.dump(values_dict, output_file)
 
     except Exception as error:
         if verbose:

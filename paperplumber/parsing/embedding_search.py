@@ -1,17 +1,17 @@
 """This module implements the embedding search of a pdf file"""
 import os
 from typing import List
-from langchain.document_loaders import PyPDFium2Loader
 from langchain.vectorstores import FAISS
 from langchain.embeddings.openai import OpenAIEmbeddings
 
 from paperplumber.logger import get_logger
+from paperplumber.parsing.pdf_parser import PDFParser
+
 
 logger = get_logger(__name__)
 
 
-
-class DocEmbeddings:
+class EmbeddingSearcher(PDFParser):
     """
     A class used to represent Document Embeddings for a specific PDF document.
 
@@ -35,24 +35,7 @@ class DocEmbeddings:
     """
 
     def __init__(self, pdf_path: str):
-        """
-        Constructs all necessary attributes for the DocEmbeddings object.
-
-        Parameters
-        ----------
-            pdf_path : str
-                The path to the PDF document.
-        """
-
-        self._pdf_path = pdf_path
-
-        # Check if the pdf exists
-        if not os.path.exists(self._pdf_path):
-            logger.error("File % does not exist",str(self._pdf_path))
-
-        # Load and split the pdf into pages
-        self._loader = PyPDFium2Loader(pdf_path)
-        self._pages = self._loader.load_and_split()
+        super().__init__(pdf_path)
 
         # Build a FAISS index from the document pages
         self._faiss_index = FAISS.from_documents(self._pages, OpenAIEmbeddings())
@@ -76,10 +59,3 @@ class DocEmbeddings:
 
         docs = self._faiss_index.similarity_search(question, k=k)
         return docs
-
-    @property
-    def pages(self):
-        """
-        Returns the split pages of the pdf file.
-        """
-        return self._pages

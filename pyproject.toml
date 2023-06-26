@@ -31,7 +31,8 @@ dependencies = [
     'typer>=0.3.2',
     'rich>=13.4.2',
     'tiktoken>=0.4.0',
-    'faiss-cpu>=1.7.4'
+    'faiss-cpu>=1.7.4',
+    "pypdfium2>=4.16.0",
 ]
 
 [project.scripts]
